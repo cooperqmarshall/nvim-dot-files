@@ -1,0 +1,13 @@
+{
+  "colors.filetypes": ["*"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "js",
+    "python",
+    "go",
+    "json",
+    "vue",
+    "html"
+  ],
+  "diagnostic.checkCurrentLine": true
+}
