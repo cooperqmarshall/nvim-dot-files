@@ -22,4 +22,15 @@ return require('packer').startup(function(use)
   use 'tpope/vim-fugitive'
   use 'ThePrimeagen/harpoon'
   use 'lewis6991/gitsigns.nvim'
+  use { "akinsho/toggleterm.nvim", tag = '*', config = function()
+    require("toggleterm").setup({
+    size = function(term)
+    if term.direction == "horizontal" then
+      return 15
+    elseif term.direction == "vertical" then
+      return vim.o.columns * 0.5
+    end
+  end}
+  )
+  end }
 end)

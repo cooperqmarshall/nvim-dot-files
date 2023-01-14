@@ -47,13 +47,14 @@ opt.whichwrap:append("<>[]hl")
 -- KEYMAPS
 local keymap = vim.keymap
 
+-- center jumps
 keymap.set("n", "n", "nzz", { noremap = true })
 keymap.set("n", "N", "Nzz", { noremap = true })
 
 keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true })
 keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true })
--- Better Save and Quit
 
+-- Better Save and Quit
 local cr_save_map_fn = function()
   if opt.modifiable:get() then
     keymap.set("n", "<CR>", ":w<CR>", { noremap = true, buffer = true })
@@ -89,6 +90,26 @@ vim.api.nvim_create_autocmd("FileType",
   { group = "netrw_toggle", pattern = "*", callback = set_correct_netrw_toggle })
 
 keymap.set("n", "<leader>E", ":Explore %:p:h<CR>", { noremap = true, silent = true })
+
+-- Toggle Term
+
+vim.api.nvim_create_user_command("ToggleTermSendVisualSelection",
+  function(opts)
+    send_term("visual_selection", false, opts.args)
+  end,
+  { range = true, nargs = "?", force = true }
+)
+
+vim.api.nvim_create_user_command("ToggleTermSendVisualLines",
+  function(opts)
+    send_term("visual_lines", false, opts.args)
+  end,
+  { range = true, nargs = "?", force = true }
+)
+keymap.set("n", "<leader>t", ":ToggleTerm direction=vertical<CR>", { noremap = true, silent = true })
+keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
+keymap.set("v", "<S-CR>", ":ToggleTermSendVisualLines<CR>", { noremap = true, silent = true })
+keymap.set("n", "<S-CR>", ":ToggleTermSendCurrentLine<CR>", { noremap = true, silent = true })
 
 -- Plugins
 require('nvim-treesitter.configs').setup {
