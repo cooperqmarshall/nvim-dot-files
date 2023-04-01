@@ -23,11 +23,11 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, bufopts)
-  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+  -- vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.formatting { async = true } end, bufopts)
+  vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
 -- Add additional capabilities supported by nvim-cmp
@@ -36,7 +36,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lspconfig = require('lspconfig')
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'pyright', 'sumneko_lua', 'vuels', 'gopls' }
+local servers = { 'pyright', 'vuels', 'gopls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -91,10 +91,22 @@ cmp.setup {
 local null_ls = require("null-ls")
 null_ls.setup({
   sources = {
-    null_ls.builtins.formatting.autopep8
+    null_ls.builtins.formatting.autopep8,
+    null_ls.builtins.formatting.fixjson,
+    null_ls.builtins.formatting.prettier
   },
 })
 
+vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end, bufopts)
 vim.api.nvim_create_augroup("format_buffer", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre",
-  { group = "format_buffer", pattern = "*", callback = vim.lsp.buf.formatting_sync })
+  { group = "format_buffer", pattern = "*", callback = vim.lsp.buf.format })
+
+
+-- Use internal formatting for bindings like gq.
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = "format_buffer",
+  callback = function(args)
+    vim.bo[args.buf].formatexpr = nil
+  end,
+})

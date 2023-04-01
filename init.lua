@@ -1,5 +1,8 @@
 require('plugins')
-require('lsp_stuff')
+if pcall(require, 'lsp_stuff') then
+  require('lsp_stuff')
+end
+
 
 -- OPTIONS
 local opt = vim.opt
@@ -14,6 +17,8 @@ g.netrw_banner = 0
 opt.relativenumber = true
 -- show current line number
 opt.nu = true
+opt.scrolloff = 8
+opt.wrap = false
 
 opt.updatetime = 50
 -- opt.cmdheight = 1
@@ -91,15 +96,17 @@ vim.api.nvim_create_autocmd("FileType",
 keymap.set("n", "<leader>E", ":Explore %:p:h<CR>", { noremap = true, silent = true })
 
 -- Plugins
-require('nvim-treesitter.configs').setup {
-  ensure_installed = "all",
-  sync_install = false,
+if pcall(require, 'nvim-treesitter.configs') then
+  require('nvim-treesitter.configs').setup {
+    ensure_installed = "all",
+    sync_install = false,
 
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-}
+    highlight = {
+      enable = false,
+      additional_vim_regex_highlighting = false,
+    },
+  }
+end
 
 vim.api.nvim_create_augroup("user_colors", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme",
@@ -111,27 +118,70 @@ vim.api.nvim_create_autocmd("ColorScheme",
 vim.api.nvim_create_autocmd("ColorScheme",
   { group = "user_colors", pattern = "*", command = "highlight SignColumn ctermbg=NONE guibg=NONE" })
 
-vim.api.nvim_set_keymap('n', '<c-P>',
-  "<cmd>lua require('fzf-lua').files()<CR>",
-  { noremap = true, silent = true })
+if pcall(require, "fzf-lua") then
+  vim.api.nvim_set_keymap('n', '<c-P>',
+    "<cmd>lua require('fzf-lua').files()<CR>",
+    { noremap = true, silent = true })
+end
 
 -- harpoon
-keymap.set("n", "<leader>m", ":lua require('harpoon.mark').add_file()<CR>", { noremap = true, silent = true })
-keymap.set("n", "<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<CR>", { noremap = true, silent = true })
-keymap.set("n", "<leader>1", ":lua require('harpoon.ui').nav_file(1)<CR>", { noremap = true, silent = true })
-keymap.set("n", "<leader>2", ":lua require('harpoon.ui').nav_file(2)<CR>", { noremap = true, silent = true })
-keymap.set("n", "<leader>3", ":lua require('harpoon.ui').nav_file(3)<CR>", { noremap = true, silent = true })
-keymap.set("n", "<leader>4", ":lua require('harpoon.ui').nav_file(4)<CR>", { noremap = true, silent = true })
+if pcall(require, "harpoon.ui") and pcall(require, "harpoon.mark") then
+  keymap.set("n", "<leader>m", function() require('harpoon.mark').add_file() end, { noremap = true, silent = true })
+  keymap.set("n", "<leader>h", function() require('harpoon.ui').toggle_quick_menu() end,
+    { noremap = true, silent = true })
+  keymap.set({ "n", "i" }, "<C-h>", function() require('harpoon.ui').nav_file(1) end, { noremap = true, silent = true })
+  keymap.set({ "n", "i" }, "<C-j>", function() require('harpoon.ui').nav_file(2) end, { noremap = true, silent = true })
+  keymap.set({ "n", "i" }, "<C-k>", function() require('harpoon.ui').nav_file(3) end, { noremap = true, silent = true })
+  --	keymap.set({ "n", "i" }, "<C-l>", function() require('harpoon.ui').nav_file(4) end, { noremap = true, silent = true })
+end
+
+-- keymap.set({ "n", "i" }, "<C-m>", function() vim.cmd("nohlsearch") end, { noremap = true, silent = true })
 
 -- gitsigns
-require('gitsigns').setup()
+if pcall(require, "gitsigns") then
+  require('gitsigns').setup()
+end
 
 -- colorscheme
-require("dracula").setup()
+if pcall(require, "dracula") then
+  require("dracula").setup()
+end
 -- vim.cmd[[colorscheme dracula]]
-require("tokyonight").setup {
-  style = "night"
-}
+if pcall(require, "tokyonight") then
+  require("tokyonight").setup {
+    style = "night"
+  }
+end
 local theme = 'tokyonight'
 
 vim.cmd('colorscheme ' .. theme)
+
+-- feline
+if pcall(require, "feline") then
+  require('feline').setup()
+end
+
+
+vim.g.diagnostics_visible = true
+
+function _G.toggle_diagnostics()
+  if vim.g.diagnostics_visible then
+    vim.diagnostic.config({ virtual_text = false })
+    vim.g.diagnostics_visible = false
+  else
+    vim.diagnostic.config({ virtual_text = true })
+    vim.g.diagnostics_visible = true
+  end
+end
+
+keymap.set('n', '<leader>D', toggle_diagnostics)
+
+-- fugitive
+keymap.set("n", "<leader>g", ":vertical G<CR>")
+
+keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end, bufopts)
+
+-- toggle term
+keymap.set("n", '<leader>t', ":ToggleTerm direction=vertical<CR>")
+keymap.set('t', '<esc>', [[<C-\><C-n>]])
+keymap.set('v', '<S-CR>', ":ToggleTermSendVisualLines<CR>")
