@@ -50,12 +50,12 @@ return require('packer').startup(function(use)
 
   -- themes/aesthetics
   use 'folke/tokyonight.nvim'
+  use 'Mofiqul/dracula.nvim'
   use { "catppuccin/nvim", as = "catppuccin" }
   use 'lewis6991/gitsigns.nvim'
   use 'feline-nvim/feline.nvim'
 
   -- workflow
-  use { 'junegunn/fzf', run = './install --bin', }
   use { 'ibhagwan/fzf-lua',
     requires = { 'kyazdani42/nvim-web-devicons' }
   }

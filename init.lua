@@ -25,6 +25,8 @@ opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 
 -- idk
 opt.termguicolors = true
+
+-- search
 opt.smartcase = true
 opt.ignorecase = true
 opt.confirm = true
@@ -37,6 +39,8 @@ opt.shiftwidth = 2
 opt.smartindent = true
 opt.tabstop = 2
 opt.softtabstop = 2
+
+opt.scrolloff = 8
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
@@ -52,7 +56,7 @@ keymap.set("n", "N", "Nzz", { noremap = true })
 keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true })
 keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true })
 
--- Better Save and Quit
+-- Save and Quit on enter
 local cr_save_map_fn = function()
   if opt.modifiable:get() then
     keymap.set("n", "<CR>", ":w<CR>", { noremap = true, buffer = true })
