@@ -1,5 +1,6 @@
 -- KEYMAPS
 local keymap = vim.keymap
+local opt = vim.opt
 
 -- center jumps
 keymap.set("n", "n", "nzz", { noremap = true })
