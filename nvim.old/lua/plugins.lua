@@ -42,6 +42,7 @@ return require('packer').startup(function(use)
 
   -- themes/aesthetics
   use 'folke/tokyonight.nvim'
+  use 'folke/tokyonight.nvim'
   use { "catppuccin/nvim", as = "catppuccin" }
   use 'lewis6991/gitsigns.nvim'
   use 'feline-nvim/feline.nvim'

@@ -1,14 +1,11 @@
-require('plugins')
-if pcall(require, 'lsp_stuff') then
-  require('lsp_stuff')
-end
-
+-- Cooper's Neovim init.lua
 
 -- OPTIONS
 local opt = vim.opt
 local g = vim.g
 
 g.mapleader = " "
+
 -- netrw configs
 g.netrw_keepdir = 1
 -- g.netrw_winsize = 25
@@ -17,24 +14,20 @@ g.netrw_banner = 0
 opt.relativenumber = true
 -- show current line number
 opt.nu = true
-opt.scrolloff = 8
-opt.wrap = false
 
 opt.updatetime = 50
 -- opt.cmdheight = 1
 opt.swapfile = false
+
 -- persist undos
 opt.undofile = true
 opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 
 -- idk
 opt.termguicolors = true
-
 opt.smartcase = true
 opt.ignorecase = true
-
 opt.confirm = true
-
 opt.splitbelow = true
 opt.splitright = true
 
@@ -80,7 +73,6 @@ keymap.set("n", "H", "^")
 keymap.set("n", "L", "$")
 
 -- netrw keymaps
-
 local set_correct_netrw_toggle = function()
   -- vim.cmd('lua print(vim.bo.filetype)')
   if vim.bo.filetype == "netrw" then
@@ -105,6 +97,39 @@ vim.api.nvim_create_user_command("ToggleTermSendVisualSelection",
   { range = true, nargs = "?", force = true }
 )
 
+-- Background transparancy
+vim.api.nvim_create_augroup("user_colors", { clear = true })
+vim.api.nvim_create_autocmd("ColorScheme",
+  { group = "user_colors", pattern = "*", command = "highlight Normal ctermbg=NONE guibg=NONE" })
+vim.api.nvim_create_autocmd("ColorScheme",
+  { group = "user_colors", pattern = "*", command = "highlight NormalNC ctermbg=NONE guibg=NONE" })
+vim.api.nvim_create_autocmd("ColorScheme",
+  { group = "user_colors", pattern = "*", command = "highlight NormalSB ctermbg=NONE guibg=NONE" })
+vim.api.nvim_create_autocmd("ColorScheme",
+  { group = "user_colors", pattern = "*", command = "highlight SignColumn ctermbg=NONE guibg=NONE" })
+
+
+-- Plugins
+if pcall(require, 'plugins') then
+
+  -- LSP Zero
+  local ok, lsp = pcall(require,'lsp-zero')
+  if (ok) then 
+    lsp.preset({
+      name = 'minimal',
+      set_lsp_keymaps = true,
+      manage_nvim_cmp = true,
+      suggest_lsp_servers = false,
+    })
+    lsp.setup()
+  end
+
+  local ok, mason = pcall(require,'mason')
+  if (ok) then mason.setup() end
+
+end
+
+-- toggle_term
 vim.api.nvim_create_user_command("ToggleTermSendVisualLines",
   function(opts)
     send_term("visual_lines", false, opts.args)
@@ -129,15 +154,6 @@ if pcall(require, 'nvim-treesitter.configs') then
   }
 end
 
-vim.api.nvim_create_augroup("user_colors", { clear = true })
-vim.api.nvim_create_autocmd("ColorScheme",
-  { group = "user_colors", pattern = "*", command = "highlight Normal ctermbg=NONE guibg=NONE" })
-vim.api.nvim_create_autocmd("ColorScheme",
-  { group = "user_colors", pattern = "*", command = "highlight NormalNC ctermbg=NONE guibg=NONE" })
-vim.api.nvim_create_autocmd("ColorScheme",
-  { group = "user_colors", pattern = "*", command = "highlight NormalSB ctermbg=NONE guibg=NONE" })
-vim.api.nvim_create_autocmd("ColorScheme",
-  { group = "user_colors", pattern = "*", command = "highlight SignColumn ctermbg=NONE guibg=NONE" })
 
 if pcall(require, "fzf-lua") then
   vim.api.nvim_set_keymap('n', '<c-P>',
@@ -167,19 +183,28 @@ end
 if pcall(require, "dracula") then
   require("dracula").setup()
 end
--- vim.cmd[[colorscheme dracula]]
+
 if pcall(require, "tokyonight") then
   require("tokyonight").setup {
     style = "night"
   }
 end
-local theme = 'tokyonight'
 
-vim.cmd('colorscheme ' .. theme)
+require("catppuccin").setup({
+	flavor = "mocha",
+	transparent_background = true
+})
+
+vim.cmd.colorscheme 'catppuccin'
 
 -- feline
 if pcall(require, "feline") then
-  require('feline').setup()
+local ctp_feline = require('catppuccin.groups.integrations.feline')
+
+ctp_feline.setup({})
+  require('feline').setup({
+    components = ctp_feline.get(),
+  })
 end
 
 
@@ -196,13 +221,8 @@ function _G.toggle_diagnostics()
 end
 
 keymap.set('n', '<leader>D', toggle_diagnostics)
+keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end, bufopts)
 
 -- fugitive
 keymap.set("n", "<leader>g", ":vertical G<CR>")
 
-keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end, bufopts)
-
--- toggle term
-keymap.set("n", '<leader>t', ":ToggleTerm direction=vertical<CR>")
-keymap.set('t', '<esc>', [[<C-\><C-n>]])
-keymap.set('v', '<S-CR>', ":ToggleTermSendVisualLines<CR>")
