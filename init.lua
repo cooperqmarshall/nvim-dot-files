@@ -222,6 +222,9 @@ end
 
 keymap.set('n', '<leader>D', toggle_diagnostics)
 keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end, bufopts)
+vim.api.nvim_create_augroup("format_buffer", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre",
+  { group = "format_buffer", pattern = "*", callback = vim.lsp.buf.format })
 
 -- fugitive
 keymap.set("n", "<leader>g", ":vertical G<CR>")
