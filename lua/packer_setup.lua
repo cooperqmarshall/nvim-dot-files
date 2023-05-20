@@ -77,6 +77,7 @@ return require('packer').startup(function(use)
       })
     end
   }
+  use {'stevearc/oil.nvim'}
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then
