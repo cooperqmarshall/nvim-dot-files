@@ -2,6 +2,9 @@
 local keymap = vim.keymap
 local opt = vim.opt
 
+-- escape
+keymap.set("i", "jk", "<Esc>", { noremap = true })
+
 -- center jumps
 keymap.set("n", "n", "nzz", { noremap = true })
 keymap.set("n", "N", "Nzz", { noremap = true })
@@ -26,8 +29,8 @@ keymap.set("n", "<leader>Q", ":q<CR>", { noremap = true })
 keymap.set("", "Y", "y$")
 
 -- H and L to begining and end of line
-keymap.set("n", "H", "^")
-keymap.set("n", "L", "$")
+keymap.set({"n", "o", "v"}, "H", "^")
+keymap.set({"n", "o", "v"}, "L", "$")
 
 -- netrw keymaps
 local set_correct_netrw_toggle = function()

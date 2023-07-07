@@ -11,3 +11,15 @@ end
 
 local ok, mason = pcall(require, 'mason')
 if (ok) then mason.setup() end
+
+-- Make sure you setup `cmp` after lsp-zero
+
+local cmp = require('cmp')
+
+cmp.setup({
+  mapping = {
+    ['<CR>'] = cmp.mapping.confirm({select = false}),
+  }
+})
+
+require("luasnip.loaders.from_vscode").lazy_load()
