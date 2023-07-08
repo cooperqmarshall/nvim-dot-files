@@ -3,7 +3,7 @@ local keymap = vim.keymap
 local opt = vim.opt
 
 -- escape
-keymap.set("i", "jk", "<Esc>", { noremap = true })
+-- keymap.set("i", "jk", "<Esc>", { noremap = true })
 
 -- center jumps
 keymap.set("n", "n", "nzz", { noremap = true })
@@ -29,24 +29,12 @@ keymap.set("n", "<leader>Q", ":q<CR>", { noremap = true })
 keymap.set("", "Y", "y$")
 
 -- H and L to begining and end of line
-keymap.set({"n", "o", "v"}, "H", "^")
-keymap.set({"n", "o", "v"}, "L", "$")
+keymap.set({ "n", "o", "v" }, "H", "^")
+keymap.set({ "n", "o", "v" }, "L", "$")
 
--- netrw keymaps
-local set_correct_netrw_toggle = function()
-  -- vim.cmd('lua print(vim.bo.filetype)')
-  if vim.bo.filetype == "netrw" then
-    keymap.set("n", "<leader>e", ":Rexplore<CR>", { silent = true })
-  else
-    keymap.set("n", "<leader>e", ":Explore<CR>", { silent = true })
-  end
-end
-
-vim.api.nvim_create_augroup("netrw_toggle", { clear = true })
-vim.api.nvim_create_autocmd("FileType",
-  { group = "netrw_toggle", pattern = "*", callback = set_correct_netrw_toggle })
-
-keymap.set("n", "<leader>E", ":Explore %:p:h<CR>", { noremap = true, silent = true })
+-- disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 function _G.toggle_diagnostics()
   if vim.g.diagnostics_visible then
@@ -63,4 +51,3 @@ keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end
 vim.api.nvim_create_augroup("format_buffer", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre",
   { group = "format_buffer", pattern = "*", callback = vim.lsp.buf.format })
-

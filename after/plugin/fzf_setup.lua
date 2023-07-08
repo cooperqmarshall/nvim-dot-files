@@ -1,5 +1,4 @@
-if pcall(require, "fzf-lua") then
-  vim.api.nvim_set_keymap('n', '<c-P>',
-    "<cmd>lua require('fzf-lua').files()<CR>",
-    { noremap = true, silent = true })
+local ok, fzf = pcall(require, "fzf-lua")
+if (ok) then
+  vim.keymap.set('n', '<c-P>', function() fzf.files() end, { noremap = true, silent = true })
 end
