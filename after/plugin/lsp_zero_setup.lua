@@ -9,6 +9,15 @@ if (ok) then
   lsp.setup()
 end
 
+local ok, cmp = pcall(require, 'cmp')
+if (ok) then
+  cmp.setup({
+    mapping = {
+      ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    }
+  })
+end
+
 local ok, mason = pcall(require, 'mason')
 if (ok) then mason.setup() end
 

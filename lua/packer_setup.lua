@@ -20,13 +20,14 @@ return require('packer').startup(function(use)
       -- LSP Support
       { 'neovim/nvim-lspconfig' }, -- Required
       {
-        -- Optional
-        'williamboman/mason.nvim',
+        'williamboman/mason.nvim', -- Optional
         run = function()
           pcall(vim.cmd, 'MasonUpdate')
         end,
       },
       { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+      { 'jose-elias-alvarez/null-ls.nvim'},
+      { 'jay-babu/mason-null-ls.nvim' },
 
       -- Autocompletion
       { 'hrsh7th/nvim-cmp' },         -- Required
@@ -77,7 +78,7 @@ return require('packer').startup(function(use)
       })
     end
   }
-  use {'stevearc/oil.nvim'}
+  use { 'stevearc/oil.nvim' }
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then
