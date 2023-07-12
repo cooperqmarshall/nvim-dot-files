@@ -3,7 +3,7 @@ local keymap = vim.keymap
 local opt = vim.opt
 
 -- escape
--- keymap.set("i", "jk", "<Esc>", { noremap = true })
+-- keymap.set({"i", "c", "v"}, "jk", "<Esc>", { noremap = true })
 
 -- center jumps
 keymap.set("n", "n", "nzz", { noremap = true })

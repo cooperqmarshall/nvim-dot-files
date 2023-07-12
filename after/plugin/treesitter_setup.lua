@@ -1,6 +1,6 @@
 if pcall(require, 'nvim-treesitter.configs') then
   require('nvim-treesitter.configs').setup {
-    ensure_installed = { "python", "lua", "vim", "vimdoc", "query", "go" },
+    ensure_installed = { "python", "lua", "vim", "query", "go" },
     sync_install = false,
 
     highlight = {
