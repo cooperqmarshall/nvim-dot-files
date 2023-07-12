@@ -85,6 +85,7 @@ return require('packer').startup(function(use)
     end
   }
   use { 'stevearc/oil.nvim' }
+  use { 'dstein64/vim-startuptime' }
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then
