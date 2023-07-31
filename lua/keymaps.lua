@@ -51,3 +51,8 @@ keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end
 vim.api.nvim_create_augroup("format_buffer", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre",
   { group = "format_buffer", pattern = "*", callback = vim.lsp.buf.format })
+
+-- yank to system clipboard
+keymap.set('v', '<leader>y', '"+y')
+-- paste to system clipboard
+keymap.set('n', '<leader>p', '"+p')
