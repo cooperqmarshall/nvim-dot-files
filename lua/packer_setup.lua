@@ -53,6 +53,7 @@ return require('packer').startup(function(use)
   use 'folke/tokyonight.nvim'
   use 'Mofiqul/dracula.nvim'
   use { "catppuccin/nvim", as = "catppuccin" }
+  use 'AlexvZyl/nordic.nvim'
   use 'lewis6991/gitsigns.nvim'
   use 'feline-nvim/feline.nvim'
 

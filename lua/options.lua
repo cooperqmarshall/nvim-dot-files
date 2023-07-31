@@ -47,3 +47,5 @@ opt.wrap = false
 
 vim.g.diagnostics_visible = true
 
+-- python host
+vim.g.python3_host_prog = '~/.pyenv/versions/3.11.4/envs/nvim-3.11.4/bin/python'
