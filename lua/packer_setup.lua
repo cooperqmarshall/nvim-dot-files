@@ -12,7 +12,7 @@ end
 local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
-  use "wbthomason/packer.nvim"
+  use 'wbthomason/packer.nvim'
   use {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v2.x',
@@ -26,7 +26,7 @@ return require('packer').startup(function(use)
         end,
       },
       { 'williamboman/mason-lspconfig.nvim' }, -- Optional
-      { 'jose-elias-alvarez/null-ls.nvim'},
+      { 'jose-elias-alvarez/null-ls.nvim' },
       { 'jay-babu/mason-null-ls.nvim' },
 
       -- Autocompletion
@@ -52,41 +52,23 @@ return require('packer').startup(function(use)
   -- themes/aesthetics
   use 'folke/tokyonight.nvim'
   use 'Mofiqul/dracula.nvim'
-  use { "catppuccin/nvim", as = "catppuccin" }
+  use { 'catppuccin/nvim', as = 'catppuccin' }
   use 'AlexvZyl/nordic.nvim'
   use 'lewis6991/gitsigns.nvim'
   use 'feline-nvim/feline.nvim'
+  use 'lukas-reineke/indent-blankline.nvim'
 
   -- workflow
---  use { 'ibhagwan/fzf-lua',
---    requires = { 'kyazdani42/nvim-web-devicons' }
---  }
   use 'kyazdani42/nvim-web-devicons'
-  use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.2',
-  -- or                            , branch = '0.1.x',
-    requires = { 'nvim-lua/plenary.nvim' }
-  }
+  use 'ibhagwan/fzf-lua'
   use 'tpope/vim-fugitive'
   use { 'ThePrimeagen/harpoon',
     requires = { 'nvim-lua/plenary.nvim' }
   }
-  use { "akinsho/toggleterm.nvim",
-    tag = '*',
-    config = function()
-      require("toggleterm").setup({
-        size = function(term)
-          if term.direction == "horizontal" then
-            return 15
-          elseif term.direction == "vertical" then
-            return vim.o.columns * 0.5
-          end
-        end
-      })
-    end
-  }
-  use { 'stevearc/oil.nvim' }
-  use { 'dstein64/vim-startuptime' }
+  use 'numToStr/Comment.nvim'
+  use 'dstein64/vim-startuptime'
+  use 'stevearc/oil.nvim'
+  use 'akinsho/toggleterm.nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then

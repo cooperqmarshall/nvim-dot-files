@@ -9,6 +9,7 @@ if (ok) then
   lsp.setup()
 end
 
+-- Make sure you setup `cmp` after lsp-zero
 local ok, cmp = pcall(require, 'cmp')
 if (ok) then
   cmp.setup({
@@ -31,6 +32,7 @@ require("mason-null-ls").setup({
   automatic_installation = false,
   handlers = {},
 })
+
 local null_ls = require("null-ls")
 null_ls.setup({
   sources = {
@@ -41,14 +43,6 @@ null_ls.setup({
     -- null_ls.builtins.diagnostics.sqlfluff
   },
 })
--- Make sure you setup `cmp` after lsp-zero
 
-local cmp = require('cmp')
-
-cmp.setup({
-  mapping = {
-    ['<CR>'] = cmp.mapping.confirm({select = false}),
-  }
-})
 
 require("luasnip.loaders.from_vscode").lazy_load()
