@@ -35,6 +35,7 @@ return require('packer').startup(function(use)
       { 'hrsh7th/cmp-buffer' },       -- Optional
       { 'hrsh7th/cmp-path' },         -- Optional
       { 'saadparwaiz1/cmp_luasnip' }, -- Optional
+      { 'f3fora/cmp-spell' },
 
       -- Snippets
       { 'L3MON4D3/LuaSnip' },             -- Required

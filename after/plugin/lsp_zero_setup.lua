@@ -9,13 +9,31 @@ if (ok) then
   lsp.setup()
 end
 
+vim.opt.spell = true
+vim.opt.spelllang = { 'en_us' }
+
 -- Make sure you setup `cmp` after lsp-zero
 local ok, cmp = pcall(require, 'cmp')
 if (ok) then
   cmp.setup({
     mapping = {
       ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    }
+    },
+    sources = cmp.config.sources({
+      {
+        name = 'spell',
+        option = {
+          keep_all_entries = false,
+          enable_in_context = function()
+            return require('cmp.config.context').in_treesitter_capture('spell')
+          end,
+        },
+      },
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+      { name = 'buffer' },
+      { name = 'path' },
+    }),
   })
 end
 
