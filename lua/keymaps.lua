@@ -38,11 +38,13 @@ vim.g.loaded_netrwPlugin = 1
 
 function _G.toggle_diagnostics()
   if vim.g.diagnostics_visible then
-    vim.diagnostic.config({ virtual_text = false })
+    vim.diagnostic.config({ virtual_text = false, underline = false })
     vim.g.diagnostics_visible = false
+    vim.opt.spell = false
   else
-    vim.diagnostic.config({ virtual_text = true })
+    vim.diagnostic.config({ virtual_text = true, underline = true )
     vim.g.diagnostics_visible = true
+    vim.opt.spell = true
   end
 end
 
