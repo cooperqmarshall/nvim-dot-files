@@ -42,7 +42,7 @@ function _G.toggle_diagnostics()
     vim.g.diagnostics_visible = false
     vim.opt.spell = false
   else
-    vim.diagnostic.config({ virtual_text = true, underline = true )
+    vim.diagnostic.config({ virtual_text = true, underline = true })
     vim.g.diagnostics_visible = true
     vim.opt.spell = true
   end
